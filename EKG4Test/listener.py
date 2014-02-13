@@ -7,6 +7,17 @@ import sys
 HOST = '127.0.0.1'
 PORT = 51116
 
+class MessageParser(object):
+    def __init__(self):
+        self.name = None
+        self.runner = None
+        self.failed = None
+        self.succeed = None
+
+    def is_valid(self):
+        if (self.name is None or self.runner is None or self.failed is None or self.succeed is None):
+            return False
+        return True
 
 def get_socket():
     (af, socktype, proto, canonname, sa) = socket.getaddrinfo(HOST, PORT,
@@ -31,11 +42,9 @@ def listening(conn):
         if not data:
             break
         conn.send(data)
-    
+
 def connect():
     (conn, addr) = get_socket().accept()
     listening(conn)
     conn.close()
     connect()
-
-connect()
