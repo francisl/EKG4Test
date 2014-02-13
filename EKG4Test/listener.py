@@ -3,6 +3,7 @@
 
 import socket
 import sys
+import json
 
 HOST = '127.0.0.1'
 PORT = 51116
@@ -14,15 +15,31 @@ class MessageParser(object):
         self.failed = None
         self.succeed = None
         self.completed = False
+        self.data = ""
+
+    def _set_info(self, data):
+        self.name = data.get("name")
+        self.runner = data.get("runner")
+        self.failed = data.get("failed")
+        self.succeed = data.get("succeed")
 
     def is_valid(self):
-        if (self.name is None or self.runner is None or self.failed is None or self.succeed is None):
-            return False
-        return True
+        return not (self.name is None or
+                    self.runner is None or
+                    self.failed is None or
+                    self.succeed is None)
 
     def parse(self, data):
         if data.find("\n") > 0:
-            self.completed = True            
+            self.completed = True
+            self.data += data.split('\n')[0]
+            parsed = json.loads(self.data)
+            self._set_info(parsed)
+
+        elif len(data) > 512:
+            raise ValueError("data length exceed!")
+
+        self.data += data
     
     def is_completed(self):
         return self.completed
@@ -37,19 +54,24 @@ def get_socket():
         sckt.listen(1)
         return sckt
     except socket.error, msg:
+        print("msg : %s" % msg)
         sckt.close()
         sys.exit(1)
 
 
-def listening(conn):
+def listening(sckt):
+    (conn, addr) = sckt.accept()
     mp = MessageParser()
     while 1:
-        data = conn.recv(512)
-        if not mp.is_valid(): return
-        conn.send(data)
+        data = conn.recv(1024)
+        if not data: break
+        try:
+            mp.parse(data)
+        except ValueError:
+            del mp; break
+        if mp.is_valid(): del mp; break
+    conn.close()
+    listening(sckt)
 
 def connect():
-    (conn, addr) = get_socket().accept()
-    listening(conn)
-    conn.close()
-    connect()
+    listening(get_socket())
