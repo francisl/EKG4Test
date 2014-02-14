@@ -30,14 +30,14 @@ class MessageParser(object):
                     self.succeed is None)
 
     def parse(self, data):
-        if data.find("\n") > 0:
+        if len(data) > 512:
+            raise ValueError("data length exceed!")
+        elif data.find("\n") > 0:
             self.completed = True
             self.data += data.split('\n')[0]
             parsed = json.loads(self.data)
-            self._set_info(parsed)
-
-        elif len(data) > 512:
-            raise ValueError("data length exceed!")
+            if isinstance(parsed, dict):
+                self._set_info(parsed)
 
         self.data += data
     

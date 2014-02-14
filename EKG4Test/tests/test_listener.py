@@ -27,11 +27,11 @@ class MessageParserTest(TestCase):
         mp.parse("other")
         self.assertFalse(mp.is_completed())
         
-        def parseError():
+        def parse_error():
             return mp.parse("last one\n")
 
         try:
-            self.assertRaises(ValueError, parseError)
+            self.assertRaises(ValueError, parse_error)
         except Exception as e:
             raise
 
@@ -54,4 +54,15 @@ class MessageParserTest(TestCase):
         self.assertEqual(mp.name, "Acme")
         self.assertTrue(mp.is_valid())
         del mp
+
+    def test_parser_should_refuse_stream_when_to_much_data(self):
+        mp = MessageParser()
+
+        def parse_too_much():
+            mp.parse('"' + ('t' * 1024) + '"\n')
+
+        try:
+            self.assertRaises(ValueError, parse_too_much)
+        except Exception as e:
+            raise
 
