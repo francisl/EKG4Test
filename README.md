@@ -21,13 +21,53 @@ Simply run the script
 
 ### Todo
 
-1. ~~Make a NSStatusBarItem (done)~~
-2. ~~Test how easy it is to add a menu (done)~~
-3. ~~Display animated graph (done)~~
-4. Check if its possible to put a gif
-5. Add socket listener
-6. Add menuitem for new listener
+* ~~Make a NSStatusBarItem (done)~~
+* ~~Test how easy it is to add a menu (done)~~
+* ~~Display animated graph (done)~~
 
-7. Plugins Karma
-8. Install Script
-9. Plugin nose
+0.2
+
+* Add socket listener
+
+0.3
+
+* Add Message Management
+
+0.4
+
+* Add menuitem for new listener
+
+0.5
+
+* Plugin Nose
+
+0.6
+
+* Plugins Karma
+* Bower install
+
+0.7
+
+* Log Last Results
+
+0.8
+
+* Install Script
+* Plugin nose
+
+0.9
+
+* Travis integration
+
+1.0
+
+* Ready to add Linux or Windows Widget
+* Nicer looking Graph
+* Install Script/pypi
+
+
+### Future
+
+* Linux Widget
+* Webview to display results
+* Replace Socket with libzmq
