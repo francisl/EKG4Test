@@ -27,33 +27,33 @@ Simply run the script
 
 0.2
 
-* Add socket listener
+* ~~Add socket listener~~
 
 0.3
 
-* Add Message Management
+* ~~Add Message Management~~
 
 0.4
 
-* Add menuitem for new listener
+* Add menuitem for each reporter
 
 0.5
 
 * Plugin Nose
 
-0.6
+0.6 
+
+* Install Script Nose
+* Install Script Widget
+
+0.7
 
 * Plugins Karma
 * Bower install
 
-0.7
-
-* Log Last Results
-
 0.8
 
-* Install Script
-* Plugin nose
+* Log Previous Results
 
 0.9
 
@@ -64,10 +64,13 @@ Simply run the script
 * Ready to add Linux or Windows Widget
 * Nicer looking Graph
 * Install Script/pypi
+* Master for 1.0, tag 1.0 start dev branch
 
 
 ### Future
 
 * Linux Widget
 * Webview to display results
-* Replace Socket with libzmq
+* Replace Socket with libzmq? (require new lib for reporter and widget)
+* replace listitem with webview?
+
