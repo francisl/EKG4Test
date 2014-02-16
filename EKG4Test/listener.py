@@ -4,16 +4,15 @@ import socket
 import sys
 import json
 
+from reporter import ReporterManager, Reporter
+
 HOST = '127.0.0.1'
 PORT = 51116
 
 class MessageParser(object):
     def __init__(self):
-        self.name = None
-        self.runner = None
-        self.failed = None
-        self.succeed = None
-        self.completed = False
+        self._valid = False
+        self._completed = False
         self.data = ""
 
     def _set_info(self, data):
@@ -23,25 +22,25 @@ class MessageParser(object):
         self.succeed = data.get("succeed")
 
     def is_valid(self):
-        return not (self.name is None or
-                    self.runner is None or
-                    self.failed is None or
-                    self.succeed is None)
+        return bool(self._valid and self._completed)
 
     def parse(self, data):
         if len(data) > 512:
             raise ValueError("data length exceed!")
         elif data.find("\n") > 0:
-            self.completed = True
+            self._completed = True
             self.data += data.split('\n')[0]
             parsed = json.loads(self.data)
             if isinstance(parsed, dict):
-                self._set_info(parsed)
+                self._valid = ReporterManager.update(parsed.get("name"),
+                                                     parsed.get("runner"),
+                                                     parsed.get("failed"),
+                                                     parsed.get("succeed"))
 
         self.data += data
     
     def is_completed(self):
-        return self.completed
+        return self._completed
     
 def get_socket():
     (af, socktype, proto, canonname, sa) = socket.getaddrinfo(HOST, PORT,

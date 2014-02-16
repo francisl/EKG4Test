@@ -1,23 +1,12 @@
 from unittest import TestCase
 from EKG4Test.listener import MessageParser
+from EKG4Test.reporter import ReporterManager
 
 class MessageParserTest(TestCase):
-    def test_is_valid_should_be_ok_when_all_param_are_set(self):
-        mp = MessageParser()
-        self.assertFalse(mp.is_valid())
-        
-        mp.name = "Acme"
-        self.assertFalse(mp.is_valid())
-        
-        mp.runner = "Karma"
-        self.assertFalse(mp.is_valid())
-        
-        mp.failed = 0
-        self.assertFalse(mp.is_valid())
-
-        mp.succeed = 0
-        self.assertTrue(mp.is_valid())
-
+    def tearDown(self):
+        ReporterManager.REPORTER_LIST = {}
+    
+    
     def test_completed_should_be_true_on_new_line(self):
         mp = MessageParser()
         
@@ -40,18 +29,16 @@ class MessageParserTest(TestCase):
     def test_parser_should_register_key_value_element_from_stream(self):
         mp = MessageParser()
         mp.parse('{"name": "Acme"}\n')
-        self.assertEqual(mp.name, "Acme")
+        self.assertFalse(mp.is_valid())
         del mp
 
         mp = MessageParser()
         mp.parse('{"name": "Acme", "runner": "Karma"}\n')
-        self.assertEqual(mp.name, "Acme")
         self.assertFalse(mp.is_valid())
         del mp
 
         mp = MessageParser()
         mp.parse('{"name": "Acme", "runner": "Karma", "failed": 3, "succeed": 15}\n')
-        self.assertEqual(mp.name, "Acme")
         self.assertTrue(mp.is_valid())
         del mp
 
