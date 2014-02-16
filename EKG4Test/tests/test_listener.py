@@ -53,3 +53,13 @@ class MessageParserTest(TestCase):
         except Exception as e:
             raise
 
+    def test_parser_should_handle_bad_stream_structure(self):
+        mp = MessageParser()
+
+        def parse_bad_input():
+            mp.parse('Hello, this a invalid input, chock you parser!\n')
+
+        try:
+            self.assertRaises(ValueError, parse_bad_input)
+        except Exception as e:
+            raise

@@ -15,12 +15,6 @@ class MessageParser(object):
         self._completed = False
         self.data = ""
 
-    def _set_info(self, data):
-        self.name = data.get("name")
-        self.runner = data.get("runner")
-        self.failed = data.get("failed")
-        self.succeed = data.get("succeed")
-
     def is_valid(self):
         return bool(self._valid and self._completed)
 
@@ -36,6 +30,8 @@ class MessageParser(object):
                                                      parsed.get("runner"),
                                                      parsed.get("failed"),
                                                      parsed.get("succeed"))
+            else:
+                raise ValueError("Invalid input")
 
         self.data += data
     
