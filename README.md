@@ -35,14 +35,17 @@ Simply run the script
 
 0.4
 
+* Add reporter manager
 * Add menuitem for each reporter
 
 0.5
 
-* Plugin Nose
+* Don't update menuitem on each pass - check for change
+* Travis integration
 
 0.6 
 
+* Plugin Nose
 * Install Script Nose
 * Install Script Widget
 
@@ -57,13 +60,12 @@ Simply run the script
 
 0.9
 
-* Travis integration
+* Ready to add Linux or Windows Widget
+* Install Script/pypi
 
 1.0
 
-* Ready to add Linux or Windows Widget
 * Nicer looking Graph
-* Install Script/pypi
 * Master for 1.0, tag 1.0 start dev branch
 
 
