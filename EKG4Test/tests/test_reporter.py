@@ -9,6 +9,10 @@ class ReporterManagerTest(TestCase):
         ReporterManager.update("Karma", "Projectx", failed=0, succeed=20)
         self.assertEqual(len(ReporterManager.get_reporter_list()), 1)
         
+    def test_update_should_register_new_reporter_with_key(self):
+        ReporterManager.update("Karma", "Projectx", failed=0, succeed=20)
+        self.assertEqual(ReporterManager.REPORTER_LIST.keys()[0], "Karma_Projectx")
+      
         
 class ReporterTest(TestCase):
     def test_parser_should_register_key_value_element_from_stream(self):

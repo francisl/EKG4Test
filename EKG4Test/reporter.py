@@ -24,7 +24,7 @@ class ReporterManager(object):
     def update(runner, name, failed, succeed):
         rep = Reporter(runner, name, failed, succeed)
         if rep.is_valid():
-            ReporterManager.REPORTER_LIST.update({runner: rep})
+            ReporterManager.REPORTER_LIST.update({runner+"_"+name: rep})
             return True
         return False
         
