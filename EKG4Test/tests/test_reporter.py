@@ -12,7 +12,17 @@ class ReporterManagerTest(TestCase):
     def test_update_should_register_new_reporter_with_key(self):
         ReporterManager.update("Karma", "Projectx", failed=0, succeed=20)
         self.assertEqual(ReporterManager.REPORTER_LIST.keys()[0], "Karma_Projectx")
-      
+
+    def test_get_reporters_should_return_all_reporter_with_keys(self):
+        ReporterManager.update("Karma", "Projectx", failed=0, succeed=20)
+        self.assertEqual(ReporterManager.get_reporters().keys()[0], "Karma_Projectx")
+
+    def test_REPORTER_LIST_should_contains_reporter_instance(self):
+        ReporterManager.update("Karma", "Projectx", failed=0, succeed=20)
+        self.assertEqual(ReporterManager.get_reporters().values()[0].runner, "Karma")
+        self.assertTrue(isinstance(ReporterManager.get_reporters().values()[0], Reporter))
+
+
         
 class ReporterTest(TestCase):
     def test_parser_should_register_key_value_element_from_stream(self):
