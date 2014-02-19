@@ -31,4 +31,8 @@ class ReporterManager(object):
     @staticmethod
     def get_reporter_list():
         return ReporterManager.REPORTER_LIST.values()
-    
+
+    @staticmethod
+    def get_reporters():
+        return ReporterManager.REPORTER_LIST
+

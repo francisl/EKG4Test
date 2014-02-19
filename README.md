@@ -4,6 +4,8 @@
 
 ### Idea
 
+Display live status of all your test running in the background
+
 It's too easy to forget that there's many test runner running in the background. They are giving you information about the status of your code.
 
 EKG is a Mac OS X statusbar listener that take information from the test runner plugins. It display live if something is broken and need your attention in one simple look.

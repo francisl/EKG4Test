@@ -12,8 +12,10 @@ from AppKit import NSImage
 from AppKit import NSVariableStatusItemLength
 from AppKit import NSApplication
 
-from PyObjCTools import NibClassBuilder
+#from PyObjCTools import NibClassBuilder
 from PyObjCTools import AppHelper
+
+from reporter import ReporterManager
 
 STARTTIME = NSDate.date()
 
@@ -133,6 +135,10 @@ class EKG4Test(NSObject):
 
     def tick_(self, notification):
         if self.test_runner.is_running():
+            rlist = ReporterManager.get_reporters()
+            for name, reporter in rlist.items():
+                rep_m_item = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(name, '', '')
+                self.menu.addItem_(rep_m_item)
             self.status_item.setImage_(self.monitor_images.next())
             self.status_item.setTitle_("F:? P:?")
         elif self.test_runner.has_stop():
