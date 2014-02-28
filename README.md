@@ -13,6 +13,8 @@ EKG is a Mac OS X statusbar listener that take information from the test runner 
 ### Requirements
 
 Mac OS X
+pyObjc
+    pip install pyobjc
 
 ### Usage
 
