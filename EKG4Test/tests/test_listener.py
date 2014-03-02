@@ -16,31 +16,24 @@ class MessageParserTest(TestCase):
         mp.parse("other")
         self.assertFalse(mp.is_completed())
         
-        def parse_error():
-            return mp.parse("last one\n")
+        def parse_error(v):
+            def parser():
+                mp.parse(v)
+            return parser
 
         try:
-            self.assertRaises(ValueError, parse_error)
+            self.assertRaises(ValueError, parse_error("last one\n"))
         except Exception as e:
             raise
 
         self.assertTrue(mp.is_completed())
 
-    def test_parser_should_register_key_value_element_from_stream(self):
         mp = MessageParser()
-        mp.parse('{"name": "Acme"}\n')
-        self.assertFalse(mp.is_valid())
-        del mp
+        try:
+            self.assertRaises(ValueError, parse_error("\n"))
+        except Exception as e:
+            raise
 
-        mp = MessageParser()
-        mp.parse('{"name": "Acme", "runner": "Karma"}\n')
-        self.assertFalse(mp.is_valid())
-        del mp
-
-        mp = MessageParser()
-        mp.parse('{"name": "Acme", "runner": "Karma", "failed": 3, "succeed": 15}\n')
-        self.assertTrue(mp.is_valid())
-        del mp
 
     def test_parser_should_refuse_stream_when_to_much_data(self):
         mp = MessageParser()

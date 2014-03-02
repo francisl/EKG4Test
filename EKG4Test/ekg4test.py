@@ -16,12 +16,12 @@ from AppKit import NSApplication
 from PyObjCTools import AppHelper
 
 from reporter import ReporterManager
+from listener import connect
 
 STARTTIME = NSDate.date()
 
 class MonitorImages(object):
-    """ Helper class to loop a list of images
-    """
+    """ Helper class to loop a list of images """
     IMAGES_LIST = ['./Resources/png/monitor-1.png',
                    './Resources/png/monitor-2.png',
                    './Resources/png/monitor-3.png',
@@ -95,6 +95,9 @@ class EKG4Test(NSObject):
         sb = NSStatusBar.systemStatusBar()
         self.test_runner = TestRunner()
         self.monitor_images = MonitorImages()
+        self.reporter_items = {}
+        self.total_passed = 0
+        self.total_failed = 0
 
         # STATUS ITEM
         self.status_item = sb.statusItemWithLength_(NSVariableStatusItemLength)
@@ -103,12 +106,6 @@ class EKG4Test(NSObject):
 
         # MENU
         self.menu = NSMenu.alloc().init()
-
-        run_menuitem = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_('Run test...', 'runtest:', '')
-        self.menu.addItem_(run_menuitem)
-
-        stop_menuitem = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_('Stop test...', 'stoptest:', '')
-        self.menu.addItem_(stop_menuitem)
 
         quit_menuitem = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_('Quit', 'terminate:', '')
         self.menu.addItem_(quit_menuitem)
@@ -136,18 +133,26 @@ class EKG4Test(NSObject):
     def tick_(self, notification):
         if self.test_runner.is_running():
             rlist = ReporterManager.get_reporters()
+            print("rlist : %s" % rlist)
             for name, reporter in rlist.items():
-                rep_m_item = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(name, '', '')
-                self.menu.addItem_(rep_m_item)
+                title = "%s - F:%s P:%s" % (name, rlist[name].failed, rlist[name].passed)
+                if name in self.reporter_items.keys():
+                    self.reporter_items[name].setTitle_(title)
+                else:
+                    self.reporter_items[name] = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(title, '', '')
+                    self.menu.insertItem_atIndex_(self.reporter_items[name], 0)
             self.status_item.setImage_(self.monitor_images.next())
-            self.status_item.setTitle_("F:? P:?")
         elif self.test_runner.has_stop():
             self.status_item.setImage_(self.monitor_images.next())
-            self.status_item.setTitle_("F: 0 P:0")
 
+        self.status_item.setTitle_("P:%s F:%s" %
+                                   (ReporterManager.total_passed(), ReporterManager.total_failed()))
 
 if __name__ == "__main__":
     app = NSApplication.sharedApplication()
     delegate =  EKG4Test.alloc().init()
     app.setDelegate_(delegate)
+    from threading import Thread
+    server = Thread(target=connect)
+    server.start()
     AppHelper.runEventLoop()

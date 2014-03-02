@@ -21,18 +21,19 @@ class MessageParser(object):
     def parse(self, data):
         if len(data) > 512:
             raise ValueError("data length exceed!")
-        elif data.find("\n") > 0:
+        elif data.find("\n") >= 0:
             self._completed = True
             self.data += data.split('\n')[0]
             parsed = json.loads(self.data)
+            print("parsed : %s" % parsed)
             if isinstance(parsed, dict):
                 self._valid = ReporterManager.update(parsed.get("name"),
                                                      parsed.get("runner"),
                                                      parsed.get("failed"),
-                                                     parsed.get("succeed"))
+                                                     parsed.get("passed"))
+                print("valid : %s" % self._valid)
             else:
                 raise ValueError("Invalid input")
-
         self.data += data
     
     def is_completed(self):
@@ -48,7 +49,6 @@ def get_socket():
         sckt.listen(1)
         return sckt
     except socket.error, msg:
-        print("msg : %s" % msg)
         sckt.close()
         sys.exit(1)
 
@@ -62,6 +62,8 @@ def listening(sckt):
         try:
             mp.parse(data)
         except ValueError:
+            conn.send('ValueError')
+            print("ValueError")
             del mp; break
         if mp.is_valid(): del mp; break
     conn.close()
