@@ -39,12 +39,16 @@ Simply run the script
 
 0.4
 
-* Add reporter manager
-* Add menuitem for each reporter
+* ~~Add reporter manager~~
+* ~~Add menuitem for each reporter~~
 
 0.5
 
-* Don't update menuitem on each pass - check for change
+* ~~Don't update menuitem on each pass - check for change~~
+* Test reporter total updates
+
+0.5.1
+
 * Travis integration
 
 0.6 

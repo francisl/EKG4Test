@@ -8,7 +8,7 @@ setup(
     author="Francis Lavoie",
     author_email="lav.francis@gmail.com",
     url="https://github.com/francisl/EKG4Test",
-    version="0.2.0",
+    version="0.5.0",
     packages=[
         "EKG4Test"
     ],
