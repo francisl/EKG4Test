@@ -12,11 +12,12 @@ setup(
     packages=[
         "EKG4Test"
     ],
-    tests_require=[],
+    tests_require=["mock>1.0.0"],
     install_requires = [
         "nose>1.3",
         "setuptools>2.2",
         "objc>=2.5.1"
+
     ],
     test_suite='tests',
     license="MIT License",
