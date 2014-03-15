@@ -66,38 +66,12 @@ class MonitorImages(object):
 
         return self.nsimage_list[self.index]
 
-
-class TestRunner(object):
-    def __init__(self, running=True):
-        self._running = running
-        self._has_stop = False
-
-    def is_running(self):
-        return self._running
-
-    def has_stop(self):
-        if self._has_stop:
-            self._has_stop = False
-            return True
-        return self._has_stop
-
-    def run(self):
-        self._running = True
-
-    def stop(self):
-        self._running = False
-        self._has_stop = True
-
-
 class EKG4Test(NSObject):
 
     def applicationDidFinishLaunching_(self, notification):
         sb = NSStatusBar.systemStatusBar()
-        self.test_runner = TestRunner()
         self.monitor_images = MonitorImages()
         self.reporter_items = {}
-        self.total_passed = 0
-        self.total_failed = 0
 
         # STATUS ITEM
         self.status_item = sb.statusItemWithLength_(NSVariableStatusItemLength)
@@ -124,29 +98,27 @@ class EKG4Test(NSObject):
         NSRunLoop.currentRunLoop().addTimer_forMode_(self.timer, NSDefaultRunLoopMode)
         self.timer.fire()
 
-    def runtest_(self, notification):
-        self.test_runner.run()
-
-    def stoptest_(self, notification):
-        self.test_runner.stop()
-
     def tick_(self, notification):
-        if self.test_runner.is_running():
-            rlist = ReporterManager.get_reporters()
-            print("rlist : %s" % rlist)
-            for name, reporter in rlist.items():
-                title = "%s - F:%s P:%s" % (name, rlist[name].failed, rlist[name].passed)
-                if name in self.reporter_items.keys():
-                    self.reporter_items[name].setTitle_(title)
-                else:
-                    self.reporter_items[name] = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(title, '', '')
-                    self.menu.insertItem_atIndex_(self.reporter_items[name], 0)
-            self.status_item.setImage_(self.monitor_images.next())
-        elif self.test_runner.has_stop():
-            self.status_item.setImage_(self.monitor_images.next())
+        #if self.test_runner.is_running():
+        rlist = ReporterManager.get_reporters()
+        for name, reporter in rlist.items():
+            title = "%s - S:%s F:%s E:%s" % \
+                    (name,
+                     rlist[name].success,
+                     rlist[name].failures,
+                     rlist[name].errors)
+            if name in self.reporter_items.keys():
+                self.reporter_items[name].setTitle_(title)
+            else:
+                self.reporter_items[name] = NSMenuItem.alloc().initWithTitle_action_keyEquivalent_(title, '', '')
+                self.menu.insertItem_atIndex_(self.reporter_items[name], 0)
 
-        self.status_item.setTitle_("P:%s F:%s" %
-                                   (ReporterManager.total_passed(), ReporterManager.total_failed()))
+        self.status_item.setImage_(self.monitor_images.next())
+
+        self.status_item.setTitle_("S:%s F:%s E:%s" %
+                                   (ReporterManager.total_success(),
+                                    ReporterManager.total_failures(),
+                                    ReporterManager.total_errors()))
 
 if __name__ == "__main__":
     app = NSApplication.sharedApplication()

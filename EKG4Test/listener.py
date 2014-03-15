@@ -4,7 +4,7 @@ import socket
 import sys
 import json
 
-from reporter import ReporterManager, Reporter
+from reporter import ReporterManager
 
 HOST = '127.0.0.1'
 PORT = 51116
@@ -25,13 +25,12 @@ class MessageParser(object):
             self._completed = True
             self.data += data.split('\n')[0]
             parsed = json.loads(self.data)
-            print("parsed : %s" % parsed)
             if isinstance(parsed, dict):
                 self._valid = ReporterManager.update(parsed.get("name"),
                                                      parsed.get("runner"),
-                                                     parsed.get("failed"),
-                                                     parsed.get("passed"))
-                print("valid : %s" % self._valid)
+                                                     parsed.get("success"),
+                                                     parsed.get("failures"),
+                                                     parsed.get("errors"))
             else:
                 raise ValueError("Invalid input")
         self.data += data
@@ -41,7 +40,7 @@ class MessageParser(object):
     
 def get_socket():
     (af, socktype, proto, canonname, sa) = socket.getaddrinfo(HOST, PORT,
-                                                              socket.AF_UNSPEC, socket.SOCK_STREAM,
+                                                              socket.AF_INET, socket.SOCK_STREAM,
                                                               0, socket.AI_PASSIVE)[0]
     try:
         sckt = socket.socket(af, socktype, proto)
@@ -63,7 +62,6 @@ def listening(sckt):
             mp.parse(data)
         except ValueError:
             conn.send('ValueError')
-            print("ValueError")
             del mp; break
         if mp.is_valid(): del mp; break
     conn.close()
