@@ -1,3 +1,4 @@
+### SETUP FOR TESTS, TEST DON'T REQUIRE PYOBJC - SHOULD BE TESTABLE ON OTHER OS THAN OSX
 try:
     from setuptools import setup
 except ImportError:
@@ -11,10 +12,9 @@ setup(
     packages=[
         "EKG4Test"
     ],
-    install_requires=[
-        "setuptools>2.2",
-        "pyobjc>=2.5.1"
-    ],
+    tests_require=["nose>1.3.0", "mock>1.0.0"],
+    install_requires=[],
+    test_suite='EKG4Test.tests',
     license="MIT License",
     description="Display live status of all your test running in the background",
     long_description=open("README.md").read()
