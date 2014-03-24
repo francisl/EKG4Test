@@ -45,7 +45,7 @@ Simply run the script
 0.5
 
 * ~~Don't update menuitem on each pass - check for change~~
-* Test reporter total updates
+* ~~Test reporter total updates~~
 
 0.5.1
 
@@ -69,7 +69,7 @@ Simply run the script
 0.9
 
 * Ready to add Linux or Windows Widget
-* Install Script/pypi
+* Install Script
 
 1.0
 
