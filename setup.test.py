@@ -12,7 +12,7 @@ setup(
     packages=[
         "EKG4Test"
     ],
-    tests_require=["nose>1.3.0", "mock>1.0.0"],
+    tests_require=["nose", "mock"],
     install_requires=[],
     test_suite='EKG4Test.tests',
     license="MIT License",
