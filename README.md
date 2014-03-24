@@ -1,5 +1,7 @@
 ## Electro Kardio Gram for test runner
 
+[![Build Status](https://travis-ci.org/francisl/EKG4Test.png?branch=master)](https://travis-ci.org/francisl/EKG4Test)
+
 ! Proof of concept
 
 ### Idea
