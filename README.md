@@ -16,7 +16,8 @@ EKG is a Mac OS X statusbar listener that take information from the test runner 
 
 Mac OS X
 pyObjc
-    pip install pyobjc
+
+    pip install pyobjc  # really long
 
 ### Usage
 
@@ -51,38 +52,25 @@ Simply run the script
 
 0.5.1
 
-* Travis integration
+* ~~Travis integration~~
 
-0.6 
+0.6
 
-* Plugin Nose
-* Install Script Nose
-* Install Script Widget
+* Ready to add Linux or Windows Widget
+* Install Script
+* executable script
 
 0.7
 
-* Plugins Karma
-* Bower install
+* Nicer looking Graph
 
 0.8
 
 * Log Previous Results
 
-0.9
-
-* Ready to add Linux or Windows Widget
-* Install Script
-
-1.0
-
-* Nicer looking Graph
-* Master for 1.0, tag 1.0 start dev branch
-
 
 ### Future
 
-* Linux Widget
-* Webview to display results
+* Linux Widget - switch to java/swt for only one code base for desktop and share business logic with android?
+* Webview to display results - replace listitem with webview?
 * Replace Socket with libzmq? (require new lib for reporter and widget)
-* replace listitem with webview?
-
